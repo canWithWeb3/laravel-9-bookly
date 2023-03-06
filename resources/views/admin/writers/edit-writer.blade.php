@@ -15,9 +15,9 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Resim:</label>
                         <input type="file" name="image" id="image"
-                        class="form-control"
-                        value="@if(old('image')){{old('image')}}@else{{ $writer->image }}@endif"
-                        required>
+                            class="form-control"
+                            value="@if(old('image')){{old('image')}}@else{{ $writer->image }}@endif"
+                            >
                         @error('image')
                             <div class="invalid-feedback">
                                 {{ $message }}

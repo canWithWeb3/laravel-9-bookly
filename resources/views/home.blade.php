@@ -68,19 +68,37 @@
 
       <div class="row">
 
-        <div class="col-lg-3">
-          <div class="card border-0">
-            <img src="image/darknet.jpg" alt="" class="img-fluid">
-            <div class="card-body">
-              <h1 class="h4">Book 1</h1>
-              <div class="d-flex flex-wrap align-items-center justify-content-start gap-3 mb-3">
-                <span class="fs-4 fw-bold">$15.99</span>
-                <span class="fs-5 text-decoration-line-through text-gray">$20.99</span>
-              </div>
-              <button class="btn btn-outline-success">Add To Cart</button>
+        @foreach($books as $book)
+            <div class="col-lg-4">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <a href="{{ url('/book-detail/' . $book->id) }}" class="text-decoration-none text-dark">
+                                <img src="{{ asset($book->image) }}" class="img-fluid rounded-start" alt="...">
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ $book->name }}</h4>
+                            <div>$15.99 <span>$20.99</span></div>
+                            <button class="btn btn-outline-success">Add To Cart</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card border-0">
+                    <img src="{{ asset($book->image) }}" alt="" class="img-fluid">
+                    <div class="card-body">
+                    <h1 class="h4">{{ $book->name }}</h1>
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-3 mb-3">
+                        <span class="fs-4 fw-bold">$15.99</span>
+                        <span class="fs-5 text-decoration-line-through text-gray">$20.99</span>
+                    </div>
+                    <button class="btn btn-outline-success">Add To Cart</button>
+                    </div>
+                </div> -->
             </div>
-          </div>
-        </div>
+        @endforeach
 
       </div>
     </section>

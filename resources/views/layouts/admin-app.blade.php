@@ -66,7 +66,7 @@
                 </div>
             </nav>
 
-            <main class="bg-light px-3 vh-100 py-4">
+            <main style="min-height:93.8vh;" class="bg-light px-3 py-4">
                 <div class="card">
                     <div class="card-body">
                         @yield("content")

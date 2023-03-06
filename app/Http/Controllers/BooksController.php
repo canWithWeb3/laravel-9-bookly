@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\Category;
+use App\Models\Publisher;
 use App\Models\Writer;
 use Illuminate\Http\Request;
 
-class WritersController extends Controller
+class BooksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +18,8 @@ class WritersController extends Controller
      */
     public function index()
     {
-        $writers = Writer::all();
-        return view("admin.writers.writers")->with("writers", $writers);
+        $books = Book::all();
+        return view("admin.books.books")->with("books", $books);
     }
 
     /**
@@ -26,7 +29,10 @@ class WritersController extends Controller
      */
     public function create()
     {
-        return view("admin.writers.create-writer");
+        $categories = Category::all();
+        $publishers = Publisher::all();
+        $writers = Writer::all();
+        return view("admin.books.create-book", compact("categories", "publishers", "writers"));
     }
 
     /**
@@ -38,19 +44,24 @@ class WritersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "name" => "required|min:2|max:255"
+            "image" => "required",
+            "name" => "required|max:255",
+            "description" => "required|max:255",
+            "categoryId" => "required",
+            "publisherId" => "required",
+            "writerId" => "required"
         ]);
 
         $requestData = $request->all();
         $fileName = time().$request->file("image")->getClientOriginalName();
         $path = $request->file("image")->storeAs("image", $fileName, "public");
         $requestData["image"] = "/storage/".$path;
-        $result =  Writer::create($requestData);
+        $result =  Book::create($requestData);
 
         if($result){
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar eklendi");
+            return redirect("/admin/kitaplar")->with("alert_message", "Kitap eklendi");
         }else{
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar eklenemedi");
+            return redirect("/admin/kitaplar")->with("alert_message", "Kitap eklenemedi");
         }
     }
 
@@ -73,12 +84,7 @@ class WritersController extends Controller
      */
     public function edit($id)
     {
-        $writer = Writer::find($id);
-        if($writer){
-            return view("admin.writers.edit-writer")->with("writer", $writer);
-        }else{
-            return redirect("/admin/writers")->with("alert_message", "Yazar bulunamadı");
-        }
+        //
     }
 
     /**
@@ -90,19 +96,7 @@ class WritersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            "name" => "required|min:2|max:255"
-        ]);
-
-        $writer = Writer::find($id);
-        $inputs = $request->all();
-
-        $result = $writer->update($inputs);
-        if($result){
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar güncellendi");
-        }else{
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar güncellenemedi");
-        }
+        //
     }
 
     /**
@@ -113,11 +107,6 @@ class WritersController extends Controller
      */
     public function destroy($id)
     {
-        $result = Writer::destroy($id);
-        if($result){
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar silindi");
-        }else{
-            return redirect("/admin/yazarlar")->with("alert_message", "Yazar silinemedi");
-        }
+        //
     }
 }

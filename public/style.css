@@ -43,6 +43,13 @@
   object-fit: cover !important;
 }
 
+.price{
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 18px;
+}
+
 /* header start */
 
 .header-up .container{
