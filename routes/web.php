@@ -6,7 +6,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublishersController;
 use App\Http\Controllers\WritersController;
 use App\Models\Book;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,12 +34,38 @@ Route::get("/book-detail/{id}", function($id){
 });
 
 Route::get("/addToCart/{id}", function($id){
-    return "gönderildi";
-    // if($this->middleware('auth')){
-    //     return "gönderildi";
-    // }else{
-    //     return redirect("/login");
-    // }
+    $book = Book::find($id);
+    $count = Book::find($id)->count();
+    if(!Auth::user()){
+        return redirect()->back()
+            ->with("alert_status", "warning")
+            ->with("alert_message", "Giriş yapmadınız.");
+    }elseif($count === 0){
+        return redirect()->back()
+            ->with("alert_status", "warning")
+            ->with("alert_message", "Kitap bulunamadı.");
+    }else{
+        $userId = Auth::user()->id;
+        $isExist = Cart::where("user_id", $userId)->where("book_id", $id)->count();
+        if($isExist){
+            return redirect()->back()
+                ->with("alert_status", "warning")
+                ->with("alert_message", "Sepetenize zaten eklenmiş.");
+        }else{
+            $result = DB::insert("INSERT INTO carts(user_id,book_id) VALUES (?,?)", [$userId,$id]);
+            if($result){
+                return redirect()->back()
+                    ->with("alert_status", "success")
+                    ->with("alert_message", "Sepetinize eklendi.");
+            }else{
+                return redirect()->back()
+                    ->with("alert_status", "danger")
+                    ->with("alert_message", "Sepete ekleme hatası.");
+            }
+        }
+
+
+    }
 });
 
 Route::prefix('/admin')->middleware("auth")->group(function (){

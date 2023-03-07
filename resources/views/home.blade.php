@@ -70,7 +70,7 @@
 
         @foreach($books as $book)
             <div class="col-lg-4">
-                <div class="card mb-3" style="max-width: 540px;">
+                <div class="card mb-3">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <a href="{{ url('/book-detail/' . $book->id) }}" class="text-decoration-none text-dark">
@@ -80,8 +80,11 @@
                         <div class="col-md-8">
                         <div class="card-body">
                             <h4 class="card-title">{{ $book->name }}</h4>
-                            <div>$15.99 <span>$20.99</span></div>
-                            <button class="btn btn-outline-success">Add To Cart</button>
+                            <div class="price">
+                                <span class="fs-3 text-success fw-bold">$16.99</span>
+                                <span class="text-decoration-line-through fs-5 text-secondary">$20.99</span>
+                            </div>
+                            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis, vitae ipsam!</p>
                         </div>
                         </div>
                     </div>
